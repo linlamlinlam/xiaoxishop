@@ -9,16 +9,18 @@ class TabsView extends GetView<TabsController> {
   @override
   Widget build(BuildContext context) {
     return Obx((() => Scaffold(
-          appBar: AppBar(
-            title: const Text('TabsView'),
-            centerTitle: true,
-          ),
-          body: controller.pages[controller.currentIndex()],
+          body: PageView(
+              controller: controller.pageController,
+              onPageChanged: ((value) {
+                controller.setCurrentIndex(value);
+              }),
+              children: controller.pages),
           bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               currentIndex: controller.currentIndex.value,
               onTap: (value) {
                 controller.setCurrentIndex(value);
+                controller.pageController.jumpToPage(value);
               },
               selectedItemColor: const Color.fromARGB(255, 255, 145, 0),
               items: const [
